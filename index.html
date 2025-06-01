@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FLAG</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <h1>Where in the world?</h1>
+          <div class="dark--mood">
+            <div class="mood DARKmOOD">
+              <img class="dark__Mood" src="./img/mood.svg" alt="" />
+            </div>
+            <div class="dark DARKmOOD">
+              <img
+                class="dark__Mood"
+                src="./img/brightness-and-contrast.png"
+                alt=""
+              />
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <section>
+          <div class="searchANDsort">
+            <div class="search">
+              <input id="search" type="text" placeholder="search" />
+              <img src="./img/search.svg" alt="" />
+            </div>
+            <select class="form-select" id="regionFilter">
+              <option selected>Filter by Region</option>
+              <option value="Africa">Africa</option>
+              <option value="America">America</option>
+              <option value="Asia">Asia</option>
+              <option value="Europe">Europe</option>
+              <option value="Oceania">Oceania</option>
+            </select>
+          </div>
+        </section>
+        <section>
+          <div class="cards"></div>
+        </section>
+      </div>
+    </main>
+    <script src="./js/main.js"></script>
+    <script src="./js/darkMood.js"></script>
+  </body>
+</html>
