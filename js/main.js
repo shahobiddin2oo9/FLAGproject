@@ -1,11 +1,18 @@
+
 let cards = document.querySelector(".cards");
 let search = document.getElementById("search");
 let regionFilter = document.getElementById("regionFilter");
+let paginationDiv = document.querySelector(".pagination");
+
+let currentPage = 1;
+let itemsPerPage = 10;
+let fullData = [];
+
 function getCard({ name, flags, population, region, capital, latlng }) {
   return `
    <div class="card">
       <div class="card--body">
-      <a href=""><img src=${flags.svg}  alt="" /></a>
+      <a href="../main.html?country=${name.common}"><img src=${flags.svg}  alt="" /></a>
       </div>
       <div class="card--footer">
         <h1 class="h1" >${name.common}</h1>
@@ -21,13 +28,12 @@ function getCard({ name, flags, population, region, capital, latlng }) {
 }
 
 function getURL(url) {
-  let pr = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     let xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function () {
       if (xhr.readyState == 4) {
         if (xhr.status == 200) {
-          let data = JSON.parse(xhr.responseText);
-          resolve(data);
+          resolve(JSON.parse(xhr.responseText));
         } else {
           reject(xhr.responseText);
         }
@@ -36,41 +42,82 @@ function getURL(url) {
     xhr.open("GET", url);
     xhr.send();
   });
-  return pr;
 }
 
-async function getAllDat() {
-  let allData = await getURL("https://restcountries.com/v3.1/all");
+function renderPaginationPage(data, page) {
   cards.innerHTML = "";
-  allData.forEach((el) => {
+  let start = (page - 1) * itemsPerPage;
+  let end = start + itemsPerPage;
+  let paginatedItems = data.slice(start, end);
+  paginatedItems.forEach((el) => {
     cards.innerHTML += getCard(el);
   });
 }
-getAllDat();
+
+function renderPaginationButtons(totalItems) {
+  let totalPages = Math.ceil(totalItems / itemsPerPage);
+  paginationDiv.innerHTML = "";
+
+  for (let i = 1; i <= totalPages; i++) {
+    let btn = document.createElement("button");
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add("active");
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      renderPaginationPage(fullData, currentPage);
+      renderPaginationButtons(fullData.length);
+    });
+    paginationDiv.appendChild(btn);
+  }
+}
+
+async function getAllData() {
+  fullData = await getURL("https://restcountries.com/v3.1/all");
+  currentPage = 1;
+  renderPaginationPage(fullData, currentPage);
+  renderPaginationButtons(fullData.length);
+}
 
 search.addEventListener("keyup", function () {
   let query = search.value.trim().toLowerCase();
+  if (query.length === 0) {
+    getAllData();
+    return;
+  }
   async function searchData() {
-    let selectData = await getURL(
-      `https://restcountries.com/v3.1/name/${query}`
-    );
-    cards.innerHTML = "";
-    selectData.forEach((el) => {
-      cards.innerHTML += getCard(el);
-    });
+    try {
+      fullData = await getURL(`https://restcountries.com/v3.1/name/${query}`);
+      currentPage = 1;
+      renderPaginationPage(fullData, currentPage);
+      renderPaginationButtons(fullData.length);
+    } catch (err) {
+      cards.innerHTML = "<p>Topilmadi</p>";
+      paginationDiv.innerHTML = "";
+    }
   }
   searchData();
 });
+
 regionFilter.addEventListener("change", function (e) {
-  let getselect = e.target.value;
-  async function selectName() {
-    let selectData = await getURL(
-      `https://restcountries.com/v3.1/region/${getselect}`
-    );
-    cards.innerHTML = "";
-    selectData.forEach((el) => {
-      cards.innerHTML += getCard(el);
-    });
+  let region = e.target.value;
+  if (region === "all") {
+    getAllData();
+    return;
   }
-  selectName();
+  async function filterByRegion() {
+    try {
+      fullData = await getURL(
+        `https://restcountries.com/v3.1/region/${region}`
+      );
+      currentPage = 1;
+      renderPaginationPage(fullData, currentPage);
+      renderPaginationButtons(fullData.length);
+    } catch (err) {
+      cards.innerHTML = "<p>Region topilmadi</p>";
+      paginationDiv.innerHTML = "";
+    }
+  }
+  filterByRegion();
 });
+
+getAllData();

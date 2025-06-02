@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FLAG</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./mian.css" />
   </head>
   <body>
     <header>
@@ -28,29 +29,11 @@
     </header>
     <main>
       <div class="container">
-        <section>
-          <div class="searchANDsort">
-            <div class="search">
-              <input id="search" type="text" placeholder="search" />
-              <img src="./img/search.svg" alt="" />
-            </div>
-            <select class="form-select" id="regionFilter">
-              <option selected>Filter by Region</option>
-              <option value="Africa">Africa</option>
-              <option value="America">America</option>
-              <option value="Asia">Asia</option>
-              <option value="Europe">Europe</option>
-              <option value="Oceania">Oceania</option>
-            </select>
-          </div>
-        </section>
-        <section>
-          <div class="cards"></div>
-          <div class="pagination"></div>
-        </section>
+        <a href="./index.html" class="back">&larr; Back</a>
+        <div class="detail" id="detailContainer"></div>
       </div>
     </main>
-    <script src="./js/main.js"></script>
+    <script src="./js/details.js"></script>
     <script src="./js/darkMood.js"></script>
   </body>
 </html>
