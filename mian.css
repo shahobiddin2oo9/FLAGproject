@@ -68,3 +68,9 @@ body {
   border-radius: 4px;
   font-size: 14px;
 }
+.flag-img {
+  max-width: 100%;
+  overflow: hidden;
+  object-fit: cover;
+  height: 300px;
+}

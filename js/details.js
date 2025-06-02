@@ -9,7 +9,9 @@ async function loadCountryDetail() {
 
   document.getElementById("detailContainer").innerHTML = `
     <div class="flag">
-      <img src="${country.flags.svg}" alt="${country.name.common} Flag" />
+      <img class="flag-img" src="${country.flags.svg}" alt="${
+    country.name.common
+  } Flag" />
     </div>
     <div class="info">
       <h1>${country.name.common}</h1>
