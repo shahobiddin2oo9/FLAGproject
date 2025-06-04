@@ -1,4 +1,3 @@
-
 let cards = document.querySelector(".cards");
 let search = document.getElementById("search");
 let regionFilter = document.getElementById("regionFilter");
